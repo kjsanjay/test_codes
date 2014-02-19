@@ -1,9 +1,14 @@
-#include <stdio.h>
-#include <stdlib.h>
 /**
 *Singly Linked List library
+Add- stack(added to head of the list) & queue(adds to end of list)
+
+
 
 */
+
+#include <stdio.h>
+#include <stdlib.h>
+
 
 
 typedef struct _node
@@ -132,10 +137,10 @@ node* deleteNode(node* head,int d1)
 			if(n==head)
 				head=head->next;
 			else
-			{
 				p_node->next=n->next;
-				free(n);
-			}
+				
+			free(n);
+			//Can return head from this point
 			break;
 
 		}
@@ -143,12 +148,29 @@ node* deleteNode(node* head,int d1)
 		n=n->next;
 
 	}
+	
 	if(n==NULL)
 	{
 		printf("Node not found\n");
 	}
 
 	return head;
+
+}
+
+
+//Delete node -pop & dequeue
+
+node* popNode(node** head)
+{
+	node *n=*head;
+	if(*head)
+		*head=(*head)->next;
+
+	if(n)
+		n->next=NULL;
+
+	return n;
 
 }
 
@@ -216,6 +238,51 @@ node* searchList(node *head,int d1)
 
 //Swap two nodes
 
+//Reverse List
+
+node* reverseList_i(node* head)
+{
+	node *n=head;
+	node *this_old_next;
+	node *this_new_next=NULL;
+
+
+	while(n)
+	{
+		this_old_next=n->next;
+		n->next=this_new_next;
+		this_new_next=n;
+		n=this_old_next;
+	}
+
+	return this_new_next;
+
+
+
+}
+
+
+void reverseList_r(node** head)
+{
+	node *first, *remain;
+	if(*head==NULL)
+		return;
+
+	first=*head;
+	remain=first->next;
+
+	if(remain==NULL)
+		return;
+
+	reverseList_r(&remain);
+
+	first->next->next=first;
+	first->next=NULL;
+
+	*head=remain;
+
+
+}
 
 //traversing or display list
 
@@ -225,12 +292,14 @@ void displayList(node *head)
 	while(head!=NULL)
 	{
 
-		printf("%d %d\n",head->data1,head->data2);
+		printf("%d %d -> ",head->data1,head->data2);
 		head=head->next;
 
 
 	}
+	printf("\n");
 
 
 }
+
 
