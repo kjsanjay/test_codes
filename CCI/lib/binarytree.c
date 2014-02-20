@@ -44,6 +44,8 @@ tree_node* insertNode_r(tree_node* root,int data)
 //Min value in a binary search tree
 int minValue_r(tree_node *root)
 {
+	if(root==NULL) return -1;
+
 	if(root->left!=NULL)
 	{	
 
@@ -58,6 +60,8 @@ int minValue_r(tree_node *root)
 
 int minValue_i(tree_node *root)
 {
+	if(root==NULL) return -1;
+
 	while(root->left!=NULL)
 	{
 
@@ -129,41 +133,21 @@ void inorder_r(tree_node *root)
 	if(root!=NULL)
 	{
 		
-		preorder_r(root->left);
+		inorder_r(root->left);
 		printf("%d -> ", root->data);
-		preorder_r(root->right);
+		inorder_r(root->right);
 
 	}
 
 }
-
-void inorder_test(tree_node *root)
-{
-	if(root!=NULL)
-	{
-		
-		preorder_r(root->left);
-		printf("%d -> ", root->data);
-		if(root->left)
-			printf("l:%d -> ", (root->left)->data);
-		if(root->right)
-			printf("r:%d -> ", (root->right)->data);
-
-		printf("\n");
-		preorder_r(root->right);
-
-	}
-
-}
-
 
 void postorder_r(tree_node *root)
 {
 	if(root!=NULL)
 	{
 		
-		preorder_r(root->left);
-		preorder_r(root->right);
+		postorder_r(root->left);
+		postorder_r(root->right);
 		printf("%d -> ", root->data);
 
 	}
@@ -199,17 +183,168 @@ int lookup_r(tree_node *root,int target)
 
 }
 
-
-void freeTree(tree_node *root)
+//Print all path sums
+void printPathSum(tree_node *root,int sum)
 {
-	if(root!=NULL)
+	sum+=root->data;
+	if(root->left==NULL && root->right==NULL)
+		printf("S=%d\n",sum);
+	else
 	{
+		if(root->left!=NULL)
+			printPathSum(root->left,sum);
 		
-		freeTree(root->left);
-		free(root->left);
-		printf("%d", root->data);
-		freeTree(root->right);
+		if(root->right!=NULL)
+			printPathSum(root->right,sum);
+
 
 	}
 
 }
+
+int hasPathSum(tree_node *root,int sum)
+{
+	if(root==NULL)
+	{
+		return !(sum); 
+		// return (sum==0)?1:0;
+
+		// if(sum==0)
+		// {
+		// 	// printf("Found\n");
+		// 	return 1;
+		// }
+			
+		// else
+		// {
+		// 	return 0;
+		// }
+			
+	}
+	else
+	{
+		sum-=root->data;
+		return (hasPathSum(root->left,sum) || 
+					hasPathSum(root->right,sum));
+
+
+
+	}
+}
+
+void printArray(int path[],int pathLen)
+{
+
+	int i;
+	for(i=0;i<pathLen;i++)
+	{
+		printf("%d -> ",path[i] );
+
+	}
+	printf("\n");
+
+}
+
+
+void printPaths(tree_node *root,int path[],int pathLen)
+{
+	
+	if(root==NULL) return;
+
+	path[pathLen++]=root->data;
+
+	if(root->left==NULL && root->right==NULL)
+	{
+		printArray(path,pathLen);
+
+	}
+		
+	else
+	{
+		
+		// if(root->left!=NULL)
+			printPaths(root->left,path,pathLen);
+		// if(root->right!=NULL)
+			printPaths(root->right,path,pathLen);		
+	}
+
+
+}
+
+void mirror(tree_node *root)
+{
+	if(root==NULL)
+		return;
+	else
+	{
+		tree_node *tmp_node;
+		tmp_node=root->left;
+		root->left=root->right;
+		root->right=tmp_node;
+		mirror(root->left);
+		mirror(root->right);
+
+	}
+}
+
+void doubleTree(tree_node *root)
+{
+	if(root==NULL)
+	{
+		return;
+	}
+	else
+	{
+		tree_node *dup_node=newNode(root->data);
+		dup_node->left=root->left;
+		root->left=dup_node;
+		root->left->data=root->data;
+		doubleTree(root->left->left);
+		doubleTree(root->right);
+
+
+
+	}
+
+
+}
+
+
+int sameTree(tree_node *a, tree_node *b)
+{
+	if(a==NULL && b==NULL)
+		return 1;
+	else if(a!=NULL & b!= NULL)
+	{
+		if(a->data==b->data)
+		{
+			return (sameTree(a->left,b->left) && sameTree(a->right,b->right));
+
+		}
+
+
+	}
+	else
+		return 0;
+
+
+
+
+}
+
+
+void freeTree(tree_node *root)
+{
+	
+	if(root!=NULL)
+	{
+		
+		freeTree(root->left);
+		freeTree(root->right);
+		free(root);
+
+
+	}
+
+}
+
