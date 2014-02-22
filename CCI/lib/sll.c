@@ -72,13 +72,13 @@ node* addNode_queue(node* head, int d1, int d2)
 //Sorted Add node
 //Assuming the list is already sorted
 //sorting is based on d1
-node* sortedAddNode(node* head, int d1, int d2)
+
+
+node* sortedAddNode_1(node* head, int d1, int d2)
 {
 
-	node *n=head;
-	node *p_node=n;
 	node *new_node;
-	if((new_node=malloc(sizeof(node)))==NULL)
+	if((new_node=malloc(sizeof(node)))==NULL)	//1. Create new node from data
 	{
 		printf("Malloc error. Not added\n");
 		return head;
@@ -88,9 +88,78 @@ node* sortedAddNode(node* head, int d1, int d2)
 	new_node->data2=d2;
 	new_node->next=NULL;
 
-	if(head!=NULL)
+	if(head==NULL || head->data1 >= new_node->data1)
 	{
-		while(n!=NULL)
+
+		new_node->next=head;
+		head=new_node;
+	}
+	else
+	{
+		node *n=head;
+		while(n->next!=NULL && n->next->data1 < new_node->data1)
+		{
+			n=n->next;
+		}
+
+		new_node->next=n->next;
+		n->next=new_node;
+
+	}
+
+	return head;
+
+}
+
+node* sortedAddNode_2(node* head, int d1, int d2)
+{
+
+	node dummy;
+	dummy.next=head;
+	node *n=&dummy;								// Dummy node in front method
+	node *new_node;
+	if((new_node=malloc(sizeof(node)))==NULL)	//1. Create new node from data
+	{
+		printf("Malloc error. Not added\n");
+		return head;
+
+	}
+	new_node->data1=d1;
+	new_node->data2=d2;
+	new_node->next=NULL;
+
+	while(n->next!=NULL && n->next->data1 < new_node->data1)
+	{
+		n=n->next;
+	}
+
+	new_node->next=n->next;
+	n->next=new_node;
+
+
+	return dummy.next;
+}
+
+
+node* sortedAddNode_4(node* head, int d1, int d2)
+{
+
+	node *n=head;
+	node *p_node=n;
+	node *new_node;
+	if((new_node=malloc(sizeof(node)))==NULL)	//1. Create new node from data
+	{
+		printf("Malloc error. Not added\n");
+		return head;
+
+	}
+	new_node->data1=d1;
+	new_node->data2=d2;
+	new_node->next=NULL;
+
+	if(head!=NULL)			//2. Check if list is empty. head is NULL
+	{
+		while(n!=NULL)		//3. Proceed till datat1 is 
 		{
 			//Middle & before head
 			if(n->data1 > d1)
@@ -302,4 +371,33 @@ void displayList(node *head)
 
 }
 
+
+int Count(node *head,int searchFor)
+{
+	int counter=0;
+	while(head!=NULL)
+	{
+		if(head->data1==searchFor)
+			counter++;
+
+		head=head->next;
+	}
+
+	return counter++;
+
+}
+
+node* GetNth(node *head,int index)
+{
+	for(;index>0;index--)
+	{
+		if(head!=NULL)
+			head=head->next;
+		else
+			return NULL;
+
+	}
+
+	return head;
+}
 

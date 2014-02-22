@@ -73,6 +73,19 @@ int minValue_i(tree_node *root)
 }
 
 
+int maxValue_i(tree_node *root)
+{
+	if(root==NULL) return -1;
+	
+	while(root->right!=NULL)
+	{
+		root=root->right;
+	}
+
+	return (root->data);
+
+}
+
 
 
 //Count the size of tree
@@ -316,22 +329,66 @@ int sameTree(tree_node *a, tree_node *b)
 		return 1;
 	else if(a!=NULL & b!= NULL)
 	{
-		if(a->data==b->data)
-		{
-			return (sameTree(a->left,b->left) && sameTree(a->right,b->right));
+	
 
-		}
+		
+		return ((a->data==b->data) && 
+			sameTree(a->left,b->left) && 
+			sameTree(a->right,b->right));
+
+
+
+		// if(a->data==b->data)
+		// {
+		// 	return (sameTree(a->left,b->left) && sameTree(a->right,b->right));
+
+		// }
 
 
 	}
-	else
-		return 0;
+	
+
+	return 0;
 
 
 
 
 }
 
+
+int countTrees(int numKeys)
+{
+	
+
+	
+}
+
+
+int numOfPerms(int numOfNodes)
+{
+	if(numOfNodes == 1)
+	{
+		return 1;
+	}
+		
+	numOfNodes--;
+
+	return ((numOfPerms(numOfNodes)*(2*numOfNodes+2) *
+		(2*numOfNodes+1))/((numOfNodes+1)*(numOfNodes+2)));
+
+
+}
+
+
+
+int isBST1(tree_node *root)
+{
+
+	
+
+
+	
+}
 
 void freeTree(tree_node *root)
 {
