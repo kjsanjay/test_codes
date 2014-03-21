@@ -128,7 +128,7 @@ int maxDepth_r(tree_node *root)
 
 //DFS
 
-//Preorder
+//Preorder-> Root,Left,Right
 void preorder_r(tree_node *root)
 {
 	if(root!=NULL)
@@ -141,6 +141,8 @@ void preorder_r(tree_node *root)
 
 }
 
+
+//Inorder - Left,Root,Right
 void inorder_r(tree_node *root)
 {
 	if(root!=NULL)
@@ -154,6 +156,7 @@ void inorder_r(tree_node *root)
 
 }
 
+//Postorder Left,right,Root
 void postorder_r(tree_node *root)
 {
 	if(root!=NULL)

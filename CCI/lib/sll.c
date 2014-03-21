@@ -401,3 +401,148 @@ node* GetNth(node *head,int index)
 	return head;
 }
 
+
+int Length(node *head)
+{
+	int ll_len=0;
+	while(head!=NULL && head->next!=NULL)
+	{
+		head=head->next->next;
+		ll_len++;
+	}
+	if(head==NULL)
+		ll_len=2*ll_len;
+	else if(head->next==NULL)
+		ll_len=2*ll_len+1;
+
+	return ll_len;
+
+}
+
+void frontBackSplit_1(node *source, node** frontRef, node **backRef)
+{
+
+	int len=Length(source);
+	int i;
+	node *current=source;
+	if(len<2)
+	{
+		*frontRef=source;
+		*backRef=NULL;
+	}
+	else
+	{
+		int hopCount=(len-1)/2;
+		for(i=0;i<hopCount;i++)
+		{
+			current=current->next;
+		}
+		*frontRef=source;
+		*backRef=current->next;
+		current->next=NULL;
+	}
+}
+
+
+void frontBackSplit_2(node *source, node** frontRef, node **backRef)
+{
+
+	node *slow, *fast;
+
+	if(source==NULL || source->next==NULL)
+	{
+		*frontRef=source;
+		*backRef=NULL;
+	}
+	else
+	{
+		slow=source;
+		fast=source->next;
+
+
+		while(fast!=NULL && fast->next!=NULL)
+		{
+			slow=slow->next;
+			fast=fast->next->next;
+
+		}
+		// while(fast!=NULL)
+		// {
+		// 	fast=fast->next;
+		// 	if(fast!=NULL)
+		// 	{
+		// 		slow=slow->next;
+		// 		fast=fast->next;
+		// 	}
+
+
+		// }
+
+		*frontRef=source;
+		*backRef=slow->next;
+		slow->next=NULL;
+
+
+	}
+
+
+}
+
+void RemoveDuplicates(node *head)
+{
+	if(head==NULL) return;
+
+	int key=head->data1;
+
+	node * current=head;
+	while(current->next!=NULL)
+	{
+		if(current->next->data1==key)
+		{
+			node *oldNode=current->next;
+			current->next=current->next->next;
+			free(oldNode);
+		}
+		else
+		{
+			key=current->next->data1;
+			current=current->next;	
+		}
+			
+
+		
+	}
+
+
+}
+void MoveNode(node **dest, node **src)
+{
+	node *new_node=*src;
+	if(new_node!=NULL)
+	{
+		*src=new_node->next;
+		new_node->next=*dest;
+		*dest=new_node;
+
+	}
+
+
+}
+
+void AlternatingSplit(node *source,node **aRef, node **bRef)
+{
+	
+	node *a=NULL, *b=NULL;
+	node *current=source;
+	while(current!=NULL)
+	{
+		
+		MoveNode(&a,&current);
+		if(current!=NULL)
+			MoveNode(&b,&current);
+
+
+	}	
+	*aRef=a;
+	*bRef=b;
+}
